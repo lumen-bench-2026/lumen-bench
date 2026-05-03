@@ -153,10 +153,10 @@ The 207,360 per-case behavioral records (`L0`–`L3` labels per case), the
 calibration cases, and the aggregate sandbox results are released as a
 separate HuggingFace dataset:
 
-  *URL to be filled in once anonymization is lifted*
+  **https://huggingface.co/datasets/lumen-bench/lumen-bench**
 
-The HuggingFace dataset auto-generates Croissant metadata describing each
-file's schema.
+Croissant metadata is auto-generated at
+`https://huggingface.co/api/datasets/lumen-bench/lumen-bench/croissant`.
 
 The `eval_results_consolidated/` directory in this repository contains the
 verbatim per-case model outputs (assistant text, tool calls with arguments,
