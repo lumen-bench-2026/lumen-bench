@@ -1,0 +1,7 @@
+{
+    "model_name": "mistralai/ministral-8b-2512",
+    "api_base": "https://openrouter.ai/api/v1",
+    "api_key": "$OPENROUTER_API_KEY",
+    "prompt_price_per_1k": 0.0001,
+    "completion_price_per_1k": 0.0001
+}

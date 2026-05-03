@@ -1,0 +1,7 @@
+{
+    "model_name": "openai/gpt-oss-120b",
+    "api_base": "https://openrouter.ai/api/v1",
+    "api_key": "$OPENROUTER_API_KEY",
+    "prompt_price_per_1k": 3.9e-05,
+    "completion_price_per_1k": 0.00019
+}

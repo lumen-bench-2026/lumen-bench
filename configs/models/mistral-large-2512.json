@@ -1,0 +1,7 @@
+{
+    "model_name": "mistralai/mistral-large-2512",
+    "api_base": "https://openrouter.ai/api/v1",
+    "api_key": "$OPENROUTER_API_KEY",
+    "prompt_price_per_1k": 0.0005,
+    "completion_price_per_1k": 0.0015
+}

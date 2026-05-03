@@ -1,0 +1,7 @@
+{
+    "model_name": "sabia-4",
+    "api_base": "https://chat.maritaca.ai/api",
+    "api_key": "$MARITACA_API_KEY",
+    "prompt_price_per_1k": 0.001,
+    "completion_price_per_1k": 0.004
+}

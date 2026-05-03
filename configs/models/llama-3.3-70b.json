@@ -1,0 +1,7 @@
+{
+    "model_name": "meta-llama/llama-3.3-70b-instruct",
+    "api_base": "https://openrouter.ai/api/v1",
+    "api_key": "$OPENROUTER_API_KEY",
+    "prompt_price_per_1k": 0.0001,
+    "completion_price_per_1k": 0.00032
+}

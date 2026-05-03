@@ -1,0 +1,7 @@
+{
+    "model_name": "openai/gpt-oss-safeguard-20b",
+    "api_base": "https://openrouter.ai/api/v1",
+    "api_key": "$OPENROUTER_API_KEY",
+    "prompt_price_per_1k": 7e-05,
+    "completion_price_per_1k": 0.0003
+}
