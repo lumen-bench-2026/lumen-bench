@@ -6,6 +6,9 @@ when given access to executable tools, rather than what it says about the
 request. The primary signal is behavioral: did the model call a tool with
 substantive parameters that would commit the harm if executed in production?
 
+> **Browse online:** [https://lumen-bench-2026.github.io/lumen-bench/](https://lumen-bench-2026.github.io/lumen-bench/)
+> Interactive case browser — filter by model, language, prompt condition, ethical category, social-pressure variant, and judge label; click any case to read the verbatim model response, tool call, and judge verdict. No install required.
+
 ## What's in the benchmark
 
 | Axis | Count | Notes |
