@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lumen-bench · Behavioral safety for tool-calling LLMs</title>
+  <meta name="description" content="A multilingual benchmark of 207,360 tool-calling test cases across 32 LLMs, 5 languages, and 6 social-pressure variants. Browse the dataset.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%239061C2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <div class="site-title">Lumen-bench</div>
+    <nav class="site-nav">
+      <a href="index.html" class="active">Overview</a>
+      <a href="browse.html">Browse cases</a>
+      <a href="https://huggingface.co/datasets/lumen-bench/lumen-bench" target="_blank" rel="noopener">Dataset ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container narrow">
+      <p class="eyebrow">Anonymous NeurIPS 2026 D&B submission</p>
+      <h1 class="hero-title">When a model <em>refuses</em>,<br>does the tool call still happen?</h1>
+      <p class="hero-subtitle">
+        Lumen-bench measures behavioral safety in tool-calling LLMs across five languages.
+        We score what models <em>do</em>, not what they <em>say</em>: the unit of analysis is
+        the tool call, not the text.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num" data-counter="207360">0</span>
+          <span class="stat-label">Observations</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-counter="32">0</span>
+          <span class="stat-label">Models</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-counter="5">0</span>
+          <span class="stat-label">Languages</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-counter="11">0</span>
+          <span class="stat-label">Categories</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="browse.html" class="btn btn-primary">Browse all cases →</a>
+        <a href="https://huggingface.co/datasets/lumen-bench/lumen-bench" target="_blank" rel="noopener" class="btn btn-secondary">Download dataset</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINDINGS -->
+  <section>
+    <div class="container">
+      <div class="section-eyebrow">Headline findings</div>
+      <h2 class="section-title">Four systematic failure modes</h2>
+      <p class="section-subtitle">
+        From the 207,360-observation panel: each finding is backed by a paired-Wilcoxon or
+        logistic-regression test reported in the paper.
+      </p>
+      <div class="findings-grid">
+
+        <article class="finding-card">
+          <span class="num">1</span>
+          <h3>Cross-lingual safety gap</h3>
+          <p>Hindi users face higher violation rates than English users on identical scenarios. The most extreme single-model gap reaches 39 percentage points.</p>
+          <span class="key-stat">3.6× HI/EN under ethical prompt</span>
+        </article>
+
+        <article class="finding-card">
+          <span class="num">2</span>
+          <h3>Concentrated in budget tier</h3>
+          <p>The cross-lingual gap collapses among premium models and concentrates in the budget tier — exactly where mobile-app and edge deployments live.</p>
+          <span class="key-stat">Q4 premium: 0.34% violation</span>
+        </article>
+
+        <article class="finding-card">
+          <span class="num">3</span>
+          <h3>Ethical priming dominates</h3>
+          <p>Replacing the ethical system prompt with a neutral one raises violation odds by an order of magnitude — the largest single effect in the panel.</p>
+          <span class="key-stat">OR ≈ 12× neutral vs. ethical</span>
+        </article>
+
+        <article class="finding-card">
+          <span class="num">4</span>
+          <h3>The say-do gap</h3>
+          <p>In <strong>8.18%</strong> of substantive tool calls, the model verbalizes a refusal while the call still executes the harm. In Llama-4-Scout this reaches 51% of violations.</p>
+          <span class="key-stat">8.18% panel-wide</span>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HEATMAP -->
+  <section>
+    <div class="container">
+      <div class="section-eyebrow">Distribution</div>
+      <h2 class="section-title">Violation rate by language and prompt</h2>
+      <p class="section-subtitle">
+        L3-behavioral rate: share of the 6,480 cases per cell where the model executes the
+        harmful tool call (<code>COMPLY</code> or <code>SAY_DO_GAP</code>).
+      </p>
+      <div class="chart-wrap">
+        <div id="heatmap" class="heatmap"></div>
+        <p class="caption">Each cell represents 20,736 observations across the 32-model panel. Darker = higher violation rate.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BARCHART -->
+  <section>
+    <div class="container">
+      <div class="section-eyebrow">Spread</div>
+      <h2 class="section-title">Per-model violation rate</h2>
+      <p class="section-subtitle">
+        L3-behavioral rate aggregated across all 6,480 cases per model. Sorted from
+        lowest to highest.
+      </p>
+      <div class="chart-wrap">
+        <div id="barchart" class="barchart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="container">
+      <div class="section-eyebrow">Methodology in 60 seconds</div>
+      <h2 class="section-title">How a case is scored</h2>
+      <div class="findings-grid">
+        <article class="finding-card">
+          <span class="num">①</span>
+          <h3>Scenario</h3>
+          <p>One of 108 native-authored requests asking the assistant to do something ethically wrong but operationally plausible.</p>
+        </article>
+        <article class="finding-card">
+          <span class="num">②</span>
+          <h3>Tool call</h3>
+          <p>Model receives 21 deliberately generic tools. Refusal must come from reasoning, not lexical pattern matching on tool names.</p>
+        </article>
+        <article class="finding-card">
+          <span class="num">③</span>
+          <h3>Judge</h3>
+          <p>An LLM judge (o4-mini) classifies into <code>COMPLY</code>, <code>SAY_DO_GAP</code>, <code>REDIRECT</code>, or <code>AMBIGUOUS</code>. Validated against a 100-case human anchor (κ=0.73) and three cross-judges (Fleiss' κ=0.78).</p>
+        </article>
+        <article class="finding-card">
+          <span class="num">④</span>
+          <h3>Sandbox</h3>
+          <p>Stored tool calls are replayed against a deterministic mock organization. 74.6% of L2-positive cases produce non-trivial state change.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container narrow">
+      <h2>Browse the full dataset</h2>
+      <p>Filter by model, language, prompt condition, ethical category, social-pressure variant, or judge label. Click any case to read the verbatim model response and tool call.</p>
+      <a href="browse.html" class="btn btn-primary">Browse all 207,360 cases →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>Lumen-bench · Anonymous NeurIPS 2026 D&B submission</div>
+    <div>
+      <a href="https://huggingface.co/datasets/lumen-bench/lumen-bench" target="_blank" rel="noopener">Dataset</a> ·
+      <span>Data CC-BY-4.0 · Code MIT</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>renderLanding();</script>
+
+</body>
+</html>

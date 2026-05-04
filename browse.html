@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Browse cases · Lumen-bench</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%239061C2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <div class="site-title">Lumen-bench</div>
+    <nav class="site-nav">
+      <a href="index.html">Overview</a>
+      <a href="browse.html" class="active">Browse cases</a>
+      <a href="https://huggingface.co/datasets/lumen-bench/lumen-bench" target="_blank" rel="noopener">Dataset ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="browse-layout">
+
+      <!-- SIDEBAR FILTERS -->
+      <aside class="filters" id="filters">
+        <h2>Filters</h2>
+
+        <div class="filter-group">
+          <label>Language</label>
+          <div class="pill-group" id="filter-lang">
+            <button class="pill active" data-value="all">All</button>
+            <button class="pill" data-value="en">EN</button>
+            <button class="pill" data-value="pt">PT</button>
+            <button class="pill" data-value="es">ES</button>
+            <button class="pill" data-value="zh">ZH</button>
+            <button class="pill" data-value="hi">HI</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>System prompt</label>
+          <div class="pill-group" id="filter-prompt">
+            <button class="pill active" data-value="all">All</button>
+            <button class="pill" data-value="ethical">Ethical</button>
+            <button class="pill" data-value="neutral">Neutral</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Model</label>
+          <select id="filter-model">
+            <option value="all">All 32 models</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Ethical category</label>
+          <select id="filter-category">
+            <option value="all">All categories</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Social pressure</label>
+          <select id="filter-pressure">
+            <option value="all">All variants</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Judge label</label>
+          <div class="judge-checks" id="filter-judge">
+            <label class="judge-check">
+              <input type="checkbox" value="COMPLY" checked>
+              <span class="swatch" style="background:var(--comply)"></span>
+              <span>COMPLY</span>
+            </label>
+            <label class="judge-check">
+              <input type="checkbox" value="SAY_DO_GAP" checked>
+              <span class="swatch" style="background:var(--saydo)"></span>
+              <span>SAY_DO_GAP</span>
+            </label>
+            <label class="judge-check">
+              <input type="checkbox" value="REDIRECT" checked>
+              <span class="swatch" style="background:var(--redirect)"></span>
+              <span>REDIRECT</span>
+            </label>
+            <label class="judge-check">
+              <input type="checkbox" value="AMBIGUOUS" checked>
+              <span class="swatch" style="background:var(--ambig)"></span>
+              <span>AMBIGUOUS</span>
+            </label>
+            <label class="judge-check">
+              <input type="checkbox" value="REFUSAL">
+              <span class="swatch" style="background:var(--refusal)"></span>
+              <span>REFUSAL (no tool call)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Search question text</label>
+          <input type="search" id="filter-search" placeholder="e.g. discriminate, delete, falsify…">
+        </div>
+
+        <div class="filter-group">
+          <button id="reset-filters" class="btn btn-secondary" style="width:100%; justify-content:center; padding: 8px;">Reset filters</button>
+        </div>
+      </aside>
+
+      <!-- CASE LIST -->
+      <section>
+        <div class="cases-header">
+          <div class="count" id="count"><span class="loading">Loading 207,360 cases</span></div>
+        </div>
+
+        <ol class="case-list" id="case-list"></ol>
+
+        <nav class="pagination" id="pagination" hidden>
+          <button id="prev-page">← Prev</button>
+          <span class="info" id="page-info"></span>
+          <button id="next-page">Next →</button>
+        </nav>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<!-- MODAL (case detail) -->
+<div class="modal-overlay" id="modal" hidden>
+  <div class="modal" role="dialog" aria-labelledby="modal-question">
+    <div class="modal-header">
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal-meta" id="modal-meta"></div>
+      <h2 id="modal-question" class="modal-question"></h2>
+    </div>
+
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab="response">Response</button>
+      <button class="modal-tab" data-tab="tools">Tool calls</button>
+      <button class="modal-tab" data-tab="judge">Judge</button>
+      <button class="modal-tab" data-tab="raw">Raw JSON</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="tab-response" class="tab-pane active"></div>
+      <div id="tab-tools" class="tab-pane"></div>
+      <div id="tab-judge" class="tab-pane"></div>
+      <div id="tab-raw" class="tab-pane"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>Lumen-bench · Anonymous NeurIPS 2026 D&B submission</div>
+    <div>
+      <a href="https://huggingface.co/datasets/lumen-bench/lumen-bench" target="_blank" rel="noopener">Dataset</a> ·
+      <span>Data CC-BY-4.0 · Code MIT</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>renderBrowse();</script>
+
+</body>
+</html>
